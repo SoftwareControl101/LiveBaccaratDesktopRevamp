@@ -68,7 +68,7 @@ public class PayoutWait extends Payout {
         balanceBeforeBetting = GetHandler.getDouble(DealerTable.Label.BalanceValue);
         System.out.println("    Balance Before Betting: " + balanceBeforeBetting);
 
-        waitBettingPhase(20, false);
+        waitBettingPhase(23, false);
         WaitHandler.waitInvisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
 
         processPayoutCases(PayoutCase::setBetOption);
