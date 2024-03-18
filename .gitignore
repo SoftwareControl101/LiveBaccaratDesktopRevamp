@@ -40,3 +40,4 @@ build/
 ### Test Automation ###
 results/
 reports/
+test-output

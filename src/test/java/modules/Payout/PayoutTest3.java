@@ -9,10 +9,9 @@ import utilities.objects.Helper;
 
 public class PayoutTest3 extends Payout implements PayoutCase {
 
-    private double bet, playerBet;
-    private double payout;
-    private final double payoutOdds = 8;
     private final int testCase = 3;
+    private double bet, playerBet, payout;
+    private final double payoutOdds = 8;
 
     public int getTestCase() { return testCase; }
 
@@ -21,8 +20,9 @@ public class PayoutTest3 extends Payout implements PayoutCase {
 
         EventHandler.click(DealerTable.BettingOption.Tie);
 
-        if (!Helper.find(1, testCaseList) && !Helper.find(2, testCaseList))
-            EventHandler.click(DealerTable.BettingOption.Player);
+        if (Helper.find(1, testCaseList)) return;
+        if (Helper.find(2, testCaseList)) return;
+        EventHandler.click(DealerTable.BettingOption.Player);
     }
 
     public void getBetOption() {
@@ -30,8 +30,9 @@ public class PayoutTest3 extends Payout implements PayoutCase {
 
         bet = getChipValue(DealerTable.BettingChip.Tie);
 
-        if (!Helper.find(1, testCaseList) && !Helper.find(2, testCaseList))
-            playerBet = getChipValue(DealerTable.BettingChip.Player);
+        if (Helper.find(1, testCaseList)) return;
+        if (Helper.find(2, testCaseList)) return;
+        playerBet = getChipValue(DealerTable.BettingChip.Player);
     }
 
     public void computeTestCase(String[] roundResult) {
@@ -42,10 +43,12 @@ public class PayoutTest3 extends Payout implements PayoutCase {
             addWin(bet, payoutOdds);
         }
 
-        if (!Helper.find(1, testCaseList) && !Helper.find(2, testCaseList)) {
-            if (TestConditions.isPlayerWin(roundResult)) addWin(playerBet, 1);
-            else if (TestConditions.isTieWin(roundResult)) addWin(playerBet, 0);
-        }
+        if (Helper.find(1, testCaseList)) return;
+        if (Helper.find(2, testCaseList)) return;
+        if (TestConditions.isPlayerWin(roundResult))
+            addWin(playerBet, 1);
+        else if (TestConditions.isTieWin(roundResult))
+            addWin(playerBet, 0);
     }
 
     public void saveTestCase(String[] roundResult) {

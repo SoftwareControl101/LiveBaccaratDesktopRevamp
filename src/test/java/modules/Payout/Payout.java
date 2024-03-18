@@ -6,6 +6,7 @@ public class Payout extends TestMethods {
 
     protected static int[] testCaseList;
     protected static String tableInfo;
+    protected static boolean isNonCommission;
     protected static double totalWinBet, totalWinResult, totalBet, balanceBeforeBetting = 0.0, balanceAfterBetting = 0.0, balanceAfterDealing = 0.0;
 
     protected static void addWin(double chipValue, double payoutOdds) {

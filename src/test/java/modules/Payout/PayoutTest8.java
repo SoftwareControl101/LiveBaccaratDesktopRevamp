@@ -9,15 +9,15 @@ import utilities.objects.Helper;
 
 public class PayoutTest8 extends Payout implements PayoutCase {
 
-    private double bet;
-    private double payout;
-    private final double payoutOdds = 0.5;
     private final int testCase = 8;
+    private double bet, payout;
+    private final double payoutOdds = 0.5;
 
     public int getTestCase() { return testCase; }
 
     public void setBetOption() {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
         if (Helper.find(6, testCaseList)) return;
         if (Helper.find(7, testCaseList)) return;
 
@@ -26,6 +26,7 @@ public class PayoutTest8 extends Payout implements PayoutCase {
 
     public void getBetOption() {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
         if (Helper.find(6, testCaseList)) return;
 
         bet = getChipValue(DealerTable.BettingChip.Banker);
@@ -33,12 +34,14 @@ public class PayoutTest8 extends Payout implements PayoutCase {
 
     public void computeTestCase(String[] roundResult) {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
         if (Helper.find(6, testCaseList)) return;
 
         if (TestConditions.isBankerWin(roundResult) && TestConditions.isFortuneSixWin(roundResult)) {
             payout = bet + (bet * payoutOdds);
             addWin(bet, payoutOdds);
-        } else if (TestConditions.isTieWin(roundResult) && !Helper.find(7, testCaseList)) {
+        } else if (TestConditions.isTieWin(roundResult)) {
+            if (Helper.find(7, testCaseList)) return;
             payout = bet;
             addWin(bet, 0);
         }
@@ -46,6 +49,7 @@ public class PayoutTest8 extends Payout implements PayoutCase {
 
     public void saveTestCase(String[] roundResult) {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
         if (Helper.find(6, testCaseList)) return;
         if (!TestConditions.isBankerWin(roundResult)) return;
         if (!TestConditions.isFortuneSixWin(roundResult)) return;

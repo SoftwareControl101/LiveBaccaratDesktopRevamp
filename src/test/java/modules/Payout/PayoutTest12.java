@@ -9,10 +9,9 @@ import utilities.objects.Helper;
 
 public class PayoutTest12 extends Payout implements PayoutCase {
 
-    private double playerBet, bankerBet;
-    private double payout;
-    private final double payoutOdds = 1;
     private final int testCase = 12;
+    private double playerBet, bankerBet, payout;
+    private final double payoutOdds = 1;
 
     public int getTestCase() { return testCase; }
 

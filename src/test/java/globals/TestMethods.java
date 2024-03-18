@@ -18,7 +18,6 @@ public class TestMethods {
      ***************************************************************************************************************/
 
     public static void waitBettingPhase(int specifiedTime, boolean isExact) {
-        WaitHandler.waitVisibility(DealerTable.Label.ShowTimer, 900);
         int currentTimerValue = isExact ? 45 : -1;
         while (isExact ? (currentTimerValue != specifiedTime) : (currentTimerValue < specifiedTime))
             currentTimerValue = GetHandler.getInt(DealerTable.Label.ShowTimer, HandleCollection.WithException);
@@ -29,7 +28,7 @@ public class TestMethods {
      ***************************************************************************************************************/
 
     public static String[] getRoundResult() {
-        WaitHandler.waitVisibility(DealerTable.Container.WinResult, 300);
+        WaitHandler.waitVisibility(DealerTable.Container.WinResult, 900);
         int[] playerCards = getCardResults(DealerTable.Container.PlayerCards);
         int[] bankerCards = getCardResults(DealerTable.Container.BankerCards);
         int playerTotal = GetHandler.getInt(DealerTable.Label.PlayerTotalPoints);
@@ -38,30 +37,10 @@ public class TestMethods {
         List<String> roundResults = new ArrayList<>();
         roundResults.add("P " + Helper.toString(playerCards));
         roundResults.add("B " + Helper.toString(bankerCards));
-        if (TestConditions.isWin(DealerTable.BettingOption.Tie)) {
-            roundResults.add(TestVariables.TIE);
-            if ((playerCards.length == 2 && bankerCards.length == 2) &&
-                    (playerTotal == 8 || playerTotal == 9 ) && (bankerTotal == 8 || bankerTotal == 9 ))
-                roundResults.add(TestVariables.NATURAL_TIE);
-        }
-        if (TestConditions.isWin(DealerTable.BettingOption.Player)) {
-            roundResults.add(TestVariables.PLAYER);
-            if (playerCards.length == 2 && (playerTotal == 8 || playerTotal == 9 ))
-                roundResults.add(TestVariables.NATURAL_WIN);
-        }
-        if (TestConditions.isWin(DealerTable.BettingOption.Banker)) {
-            roundResults.add(TestVariables.BANKER);
-            if (bankerCards.length == 2 && (bankerTotal == 8 || bankerTotal == 9 ))
-                roundResults.add(TestVariables.NATURAL_WIN);
-        }
-        if (TestConditions.isWin(DealerTable.BettingOption.PlayerPair)) roundResults.add(TestVariables.PLAYER_PAIR);
-        if (TestConditions.isWin(DealerTable.BettingOption.BankerPair)) roundResults.add(TestVariables.BANKER_PAIR);
-        if (TestConditions.isWin(DealerTable.BettingOption.PlayerDragonBonus))
-            roundResults.add(TestVariables.PLAYER_DRAGON_BONUS + (playerTotal - bankerTotal));
-        if (TestConditions.isWin(DealerTable.BettingOption.BankerDragonBonus))
-            roundResults.add(TestVariables.BANKER_DRAGON_BONUS + (bankerTotal - playerTotal));
-        if (TestConditions.isWin(DealerTable.BettingOption.FortuneSix))
-            roundResults.add(TestVariables.FORTUNE_SIX + bankerCards.length);
+        setTieResult(roundResults, playerCards, bankerCards, playerTotal, bankerTotal);
+        setPlayerResult(roundResults, playerCards, playerTotal, bankerTotal);
+        setBankerResult(roundResults, bankerCards, playerTotal, bankerTotal);
+        setPairResult(roundResults);
 
         return Helper.toStringArray(roundResults);
     }
@@ -74,6 +53,63 @@ public class TestMethods {
         return GetHandler.getElements(component).parallelStream()
                 .mapToInt(element -> Integer.parseInt(element.getAttribute("class").split("_")[1]))
                 .toArray();
+    }
+
+    /***************************************************************************************************************
+     * The 'setTieResult' method is used to set the tie result of a current round.
+     ***************************************************************************************************************/
+
+    private static void setTieResult(List<String> roundResults, int[] playerCards, int[] bankerCards, int playerTotal, int bankerTotal) {
+        if (TestConditions.isWin(DealerTable.BettingOption.Tie)) {
+            roundResults.add(TestVariables.TIE);
+            if ((playerCards.length == 2 && bankerCards.length == 2) &&
+                    (playerTotal == 8 || playerTotal == 9 ) &&
+                    (bankerTotal == 8 || bankerTotal == 9 ))
+                roundResults.add(TestVariables.NATURAL_TIE);
+        }
+    }
+
+    /***************************************************************************************************************
+     * The 'setPlayerResult' method is used to set the player result of a current round.
+     ***************************************************************************************************************/
+
+    private static void setPlayerResult(List<String> roundResults, int[] playerCards, int playerTotal, int bankerTotal) {
+        if (TestConditions.isWin(DealerTable.BettingOption.Player)) {
+            roundResults.add(TestVariables.PLAYER);
+            if (playerCards.length == 2 &&
+                    (playerTotal == 8 || playerTotal == 9 ))
+                roundResults.add(TestVariables.NATURAL_WIN);
+            if (TestConditions.isWin(DealerTable.BettingOption.PlayerDragonBonus))
+                roundResults.add(TestVariables.PLAYER_DRAGON_BONUS + (playerTotal - bankerTotal));
+        }
+    }
+
+    /***************************************************************************************************************
+     * The 'setBankerResult' method is used to set the banker result of a current round.
+     ***************************************************************************************************************/
+
+    private static void setBankerResult(List<String> roundResults, int[] bankerCards, int playerTotal, int bankerTotal) {
+        if (TestConditions.isWin(DealerTable.BettingOption.Banker)) {
+            roundResults.add(TestVariables.BANKER);
+            if (bankerCards.length == 2 &&
+                    (bankerTotal == 8 || bankerTotal == 9 ))
+                roundResults.add(TestVariables.NATURAL_WIN);
+            if (TestConditions.isWin(DealerTable.BettingOption.BankerDragonBonus))
+                roundResults.add(TestVariables.BANKER_DRAGON_BONUS + (bankerTotal - playerTotal));
+            if (TestConditions.isWin(DealerTable.BettingOption.FortuneSix))
+                roundResults.add(TestVariables.FORTUNE_SIX + bankerCards.length);
+        }
+    }
+
+    /***************************************************************************************************************
+     * The 'setPairResult' method is used to set the pair result of a current round.
+     ***************************************************************************************************************/
+
+    private static void setPairResult(List<String> roundResults) {
+        if (TestConditions.isWin(DealerTable.BettingOption.PlayerPair))
+            roundResults.add(TestVariables.PLAYER_PAIR);
+        if (TestConditions.isWin(DealerTable.BettingOption.BankerPair))
+            roundResults.add(TestVariables.BANKER_PAIR);
     }
 
     /***************************************************************************************************************
@@ -118,7 +154,7 @@ public class TestMethods {
      ***************************************************************************************************************/
 
     public static double getUpdatedBalance() {
-        WaitHandler.wait(5);
+        WaitHandler.wait(3);
         return GetHandler.getDouble(DealerTable.Label.BalanceValue);
     }
 

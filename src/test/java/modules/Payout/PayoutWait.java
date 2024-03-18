@@ -20,34 +20,34 @@ import java.util.stream.Collectors;
 
 public class PayoutWait extends Payout {
 
-    static String[] roundResult = new String[2];
-    static List<PayoutCase> payoutCaseList;
-    static List<Integer> ignoreTestCase;
+    static String[] roundResult;
+    static List<PayoutCase> payoutCaseList = new ArrayList<>();
+    static List<Integer> ignoreTestCase = new ArrayList<>();
 
     public static void waitUntilWins(List<PayoutCase> payoutCases) {
         testCaseList = getTestCaseList(payoutCases);
         payoutCaseList = payoutCases;
+        isNonCommission = false;
         int round = 0;
 
-        do {
+        while (testCaseList.length != 0) {
             try {
-
-                ignoreTestCase = new ArrayList<>();
 
                 System.out.println();
                 System.out.println("Round #" + (++round));
                 System.out.println();
 
-                setBeforeDealing();
+                setBeforeBetting();
+                setBettingOption();
+                setAfterBetting();
                 setRoundResult();
-                setAfterDealing();
+                setAfterRoundResult();
 
                 System.out.println("    " + testCaseList.length + " Test Cases Left: " + Helper.toString(testCaseList));
                 System.out.println("    " + ignoreTestCase.size() + " Ignored Test Cases: " + Helper.toString(Helper.toStringArray(ignoreTestCase)));
-            } catch (Exception e) {
-                Printer.printError("Failed on Round #" + round + " Due to the Following Cause: " + e.getMessage());
-            }
-        } while (testCaseList.length != 0);
+
+            } catch (Exception e) { Printer.printError("Failed on Round #" + round + " Due to the Following Cause: " + e); }
+        }
 
         System.out.println();
         System.out.println("Total Rounds To Complete: " + round);
@@ -62,43 +62,40 @@ public class PayoutWait extends Payout {
         return uniqueTestCases.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    private static void setBeforeDealing() {
+    private static void setBeforeBetting() {
         totalWinBet = 0.0;
         totalWinResult = 0.0;
         balanceBeforeBetting = GetHandler.getDouble(DealerTable.Label.BalanceValue);
         System.out.println("    Balance Before Betting: " + balanceBeforeBetting);
+    }
 
-        waitBettingPhase(23, false);
-        WaitHandler.waitInvisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
-
+    private static void setBettingOption() {
+        waitBettingPhase(10, false);
+        WaitHandler.wait(1);
         processPayoutCases(PayoutCase::setBetOption);
-        EventHandler.click(DealerTable.Button.Confirm);
+        EventHandler.click(DealerTable.Button.Confirm, 1);
+    }
+
+    private static void setAfterBetting() {
         processPayoutCases(PayoutCase::getBetOption);
+        tableInfo = "Round ID " + getRoundId() + " of " + getTableName();
+        totalBet = GetHandler.getDouble(DealerTable.Label.TotalBet);
+        balanceAfterBetting = GetHandler.getDouble(DealerTable.Label.BalanceValue);
+        System.out.println("    Balance After Betting: " + balanceAfterBetting);
     }
 
     private static void setRoundResult() {
         WaitHandler.waitVisibility(DealerTable.Label.ShowDealing, 900);
-
-        tableInfo = getTableName() + " " + getRoundId();
-        totalBet = GetHandler.getDouble(DealerTable.Label.TotalBet);
-        balanceAfterBetting = GetHandler.getDouble(DealerTable.Label.BalanceValue);
-        System.out.println("    Balance After Betting: " + balanceAfterBetting);
-
         roundResult = getRoundResult();
-
-        ScreenshotFeature.capture("rounds", tableInfo + " " + Helper.toString(roundResult));
         System.out.println("    Round Result: " + Helper.toString(roundResult));
     }
 
-    private static void setAfterDealing() {
+    private static void setAfterRoundResult() {
         processPayoutCases(payoutCase -> payoutCase.computeTestCase(roundResult));
         WaitHandler.waitVisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
-
         balanceAfterDealing = getUpdatedBalance();
         System.out.println("    Balance After Dealing: " + balanceAfterDealing);
-
-        ScreenshotFeature.capture("balances", tableInfo + " " + Helper.toString(roundResult));
-
+        ScreenshotFeature.capture("balance", tableInfo + " " + Helper.toString(roundResult));
         processPayoutCases(payoutCase -> payoutCase.saveTestCase(roundResult));
     }
 

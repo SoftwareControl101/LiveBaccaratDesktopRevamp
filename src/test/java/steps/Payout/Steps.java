@@ -6,7 +6,6 @@ import modules.Payout.*;
 import pages.DealerTable;
 import utilities.features.TextFileFeature;
 import utilities.handlers.EventHandler;
-import utilities.handlers.WaitHandler;
 import utilities.interfaces.PayoutCase;
 
 import java.util.ArrayList;
@@ -17,16 +16,12 @@ public class Steps {
     @Then("I Place A Bet Until There Is A Round Result For All Payouts")
     public void iPlaceABetUntilThereIsARoundResultForAllPayouts(DataTable dataTable) {
         List<String> results = dataTable.asList(String.class);
-        PayoutWait.waitUntilWins(getFirstBatch(results));
-        WaitHandler.waitVisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
-        WaitHandler.waitInvisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
-        EventHandler.click(DealerTable.Button.Commission);
-        PayoutWait.waitUntilWins(getSecondBatch(results));
+        PayoutWait.waitUntilWins(getPayoutCases(results));
         TextFileFeature.write();
         EventHandler.click(DealerTable.Button.Back);
     }
 
-    private List<PayoutCase> getFirstBatch(List<String> results) {
+    private List<PayoutCase> getPayoutCases(List<String> results) {
         List<PayoutCase> payoutCases = new ArrayList<>();
         for (String result : results) {
             switch (result) {
@@ -34,6 +29,11 @@ public class Steps {
                 case "Commission Banker" -> payoutCases.add(new PayoutTest2());
                 case "Commission Tie" -> payoutCases.add(new PayoutTest3());
                 case "Commission Pair" -> payoutCases.add(new PayoutTest4());
+                case "Non-commission Player" -> payoutCases.add(new PayoutTest6());
+                case "Non-commission Banker" -> payoutCases.add(new PayoutTest7());
+                case "Non-commission Banker Of Six" -> payoutCases.add(new PayoutTest8());
+                case "Non-commission Tie" -> payoutCases.add(new PayoutTest9());
+                case "Non-commission Pair" -> payoutCases.add(new PayoutTest11());
                 case "Dragon Bonus Natural Win" -> payoutCases.add(new PayoutTest12());
                 case "Dragon Bonus Natural Tie" -> payoutCases.add(new PayoutTest13());
                 case "Dragon Bonus 9 Difference" -> payoutCases.add(new PayoutTest14());
@@ -44,20 +44,6 @@ public class Steps {
                 case "Dragon Bonus 4 Difference" -> payoutCases.add(new PayoutTest19());
                 case "Fortune Six 2 Cards" -> payoutCases.add(new PayoutTest21());
                 case "Fortune Six 3 Cards" -> payoutCases.add(new PayoutTest22());
-            }
-        }
-        return payoutCases;
-    }
-
-    private List<PayoutCase> getSecondBatch(List<String> results) {
-        List<PayoutCase> payoutCases = new ArrayList<>();
-        for (String result : results) {
-            switch (result) {
-                case "Non-commission Player" -> payoutCases.add(new PayoutTest6());
-                case "Non-commission Banker" -> payoutCases.add(new PayoutTest7());
-                case "Non-commission Banker Of Six" -> payoutCases.add(new PayoutTest8());
-                case "Non-commission Tie" -> payoutCases.add(new PayoutTest9());
-                case "Non-commission Pair" -> payoutCases.add(new PayoutTest11());
             }
         }
         return payoutCases;

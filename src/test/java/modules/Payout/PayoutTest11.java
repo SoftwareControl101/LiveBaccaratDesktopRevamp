@@ -9,15 +9,15 @@ import utilities.objects.Helper;
 
 public class PayoutTest11 extends Payout implements PayoutCase {
 
-    private double playerBet, bankerBet;
-    private double payout;
-    private final double payoutOdds = 11;
     private final int testCase = 11;
+    private double playerBet, bankerBet, payout;
+    private final double payoutOdds = 11;
 
     public int getTestCase() { return testCase; }
 
     public void setBetOption() {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
 
         EventHandler.click(DealerTable.BettingOption.PlayerPair);
         EventHandler.click(DealerTable.BettingOption.BankerPair);
@@ -25,6 +25,7 @@ public class PayoutTest11 extends Payout implements PayoutCase {
 
     public void getBetOption() {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
 
         playerBet = getChipValue(DealerTable.BettingChip.PlayerPair);
         bankerBet = getChipValue(DealerTable.BettingChip.BankerPair);
@@ -32,6 +33,7 @@ public class PayoutTest11 extends Payout implements PayoutCase {
 
     public void computeTestCase(String[] roundResult) {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
 
         if (TestConditions.isPlayerPairWin(roundResult)) {
             payout = playerBet + (playerBet * payoutOdds);
@@ -46,6 +48,7 @@ public class PayoutTest11 extends Payout implements PayoutCase {
 
     public void saveTestCase(String[] roundResult) {
         if (!Helper.find(testCase, testCaseList)) return;
+        if (!isNonCommission) return;
         if (!TestConditions.isPlayerPairWin(roundResult) && !TestConditions.isBankerPairWin(roundResult)) return;
 
         String currentRoundResult = Helper.toString(roundResult);
