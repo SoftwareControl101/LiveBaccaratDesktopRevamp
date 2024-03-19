@@ -12,7 +12,7 @@ public class FuncTest8 extends Functionality {
     static int expectedTotalCounter;
 
     public static void checkNumberOfDeals() {
-        WaitHandler.wait(3);
+        WaitHandler.waitVisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
         targetTable = getTableName();
         expectedTotalCounter = GetHandler.getInt(DealerTable.Label.TotalCounter);
     }

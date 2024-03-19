@@ -29,7 +29,7 @@ public class GameTest43 extends Gameplay {
             WaitHandler.wait(3);
             System.out.println("Table Name: " + tableName);
             waitBettingPhase(20, false);
-            WaitHandler.waitInvisibility(DealerTable.Label.PlaceYourBetsPlease, 900);
+            WaitHandler.wait(1);
             EventHandler.click(DealerTable.BettingOption.Player);
             EventHandler.click(DealerTable.Button.Confirm);
             WaitHandler.wait(3);

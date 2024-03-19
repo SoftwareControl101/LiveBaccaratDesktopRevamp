@@ -51,9 +51,9 @@ public class Steps {
             case "Bet Limit Or Payout Tab" -> Printer.printInfo("Test Case 48 - Click Step Is Included In Verify Step");
             case "The Table Limit Button" -> EventHandler.click(DealerTable.Button.TableLimit);
             case "Any Table Limit Available" -> GameTest49.clickAnyTableLimitAvailable();
-            case "The Video Button" -> EventHandler.click(DealerTable.Button.Video);
-            case "The Music Button" -> EventHandler.click(DealerTable.Button.Music);
-            case "The Voice Button" -> EventHandler.click(DealerTable.Button.Voice);
+            case "The Video Button" -> EventHandler.click(DealerTable.Button.Video, 1);
+            case "The Music Button" -> EventHandler.click(DealerTable.Button.Music, 1);
+            case "The Voice Button" -> EventHandler.click(DealerTable.Button.Voice, 1);
         }
     }
 

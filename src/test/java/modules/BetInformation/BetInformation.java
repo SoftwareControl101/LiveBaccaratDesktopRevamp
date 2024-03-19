@@ -35,6 +35,7 @@ public class BetInformation extends TestMethods {
     }
 
     public static void clickBetDetails() {
+        WaitHandler.wait(2);
         EventHandler.click(MyBets.Method.getDetailsButton(roundId), HandleCollection.WithScroll);
     }
 

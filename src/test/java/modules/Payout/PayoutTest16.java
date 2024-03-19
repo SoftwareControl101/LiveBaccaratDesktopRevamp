@@ -27,14 +27,28 @@ public class PayoutTest16 extends Payout implements PayoutCase {
     }
 
     public void getBetOption() {
-        if (!Helper.find(testCase, testCaseList)) return;
+        if (!Helper.find(testCase, testCaseList) &&
+                !Helper.find(12, testCaseList) &&
+                !Helper.find(13, testCaseList) &&
+                !Helper.find(14, testCaseList) &&
+                !Helper.find(15, testCaseList) &&
+                !Helper.find(17, testCaseList) &&
+                !Helper.find(18, testCaseList) &&
+                !Helper.find(19, testCaseList)) return;
 
         playerBet = getChipValue(DealerTable.BettingChip.PlayerDragonBonus);
         bankerBet = getChipValue(DealerTable.BettingChip.BankerDragonBonus);
     }
 
     public void computeTestCase(String[] roundResult) {
-        if (!Helper.find(testCase, testCaseList)) return;
+        if (!Helper.find(testCase, testCaseList) &&
+                !Helper.find(12, testCaseList) &&
+                !Helper.find(13, testCaseList) &&
+                !Helper.find(14, testCaseList) &&
+                !Helper.find(15, testCaseList) &&
+                !Helper.find(17, testCaseList) &&
+                !Helper.find(18, testCaseList) &&
+                !Helper.find(19, testCaseList)) return;
 
         if (TestConditions.isPlayerDragonBonusDifferenceWin(roundResult, 7)) {
             payout = playerBet + (playerBet * payoutOdds);

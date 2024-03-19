@@ -22,13 +22,13 @@ public class PayoutTest21 extends Payout implements PayoutCase {
     }
 
     public void getBetOption() {
-        if (!Helper.find(testCase, testCaseList)) return;
+        if (!Helper.find(testCase, testCaseList) && !Helper.find(22, testCaseList)) return;
 
         bet = getChipValue(DealerTable.BettingChip.FortuneSix);
     }
 
     public void computeTestCase(String[] roundResult) {
-        if (!Helper.find(testCase, testCaseList)) return;
+        if (!Helper.find(testCase, testCaseList) && !Helper.find(22, testCaseList)) return;
 
         if (TestConditions.isFortuneSixCardsWin(roundResult, 2)) {
             payout = bet + (bet * payoutOdds);

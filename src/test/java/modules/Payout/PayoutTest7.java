@@ -24,7 +24,7 @@ public class PayoutTest7 extends Payout implements PayoutCase {
     }
 
     public void getBetOption() {
-        if (!Helper.find(testCase, testCaseList)) return;
+        if (!Helper.find(testCase, testCaseList) && !Helper.find(8, testCaseList)) return;
         if (!isNonCommission) return;
         if (Helper.find(6, testCaseList)) return;
 
@@ -32,7 +32,7 @@ public class PayoutTest7 extends Payout implements PayoutCase {
     }
 
     public void computeTestCase(String[] roundResult) {
-        if (!Helper.find(testCase, testCaseList)) return;
+        if (!Helper.find(testCase, testCaseList) && !Helper.find(8, testCaseList)) return;
         if (!isNonCommission) return;
         if (Helper.find(6, testCaseList)) return;
 
