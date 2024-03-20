@@ -40,4 +40,8 @@ build/
 ### Test Automation ###
 results/
 reports/
+<<<<<<< Updated upstream
 test-output
+=======
+test-output
+>>>>>>> Stashed changes
