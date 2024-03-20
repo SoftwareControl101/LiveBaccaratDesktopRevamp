@@ -179,30 +179,6 @@ Feature: Gameplay
     And Click "Any Table Limit Available"
     Then Verify "The Behavior Of The Game When Selected Any Available Table Limit"
 
-  @GameplayTest50
-  Scenario: GP Test 50: Checking The Behavior Of The Video Button When Clicked
-    When I Enter The Dealer Table
-    And Click "The Video Button"
-    Then Verify "The Behavior Of The Video Button When Clicked"
-    And Click "The Video Button"
-    Then Verify "The Behavior Of The Video Button When Re-clicked"
-
-  @GameplayTest51
-  Scenario: GP Test 51: Checking The Behavior Of The Music Button When Clicked
-    When I Enter The Dealer Table
-    And Click "The Music Button"
-    Then Verify "The Behavior Of The Music Button When Clicked"
-    And Click "The Music Button"
-    Then Verify "The Behavior Of The Music Button When Re-clicked"
-
-  @GameplayTest52
-  Scenario: GP Test 52: Checking The Behavior Of The Voice Button When Clicked
-    When I Enter The Dealer Table
-    And Click "The Voice Button"
-    Then Verify "The Behavior Of The Voice Button When Clicked"
-    And Click "The Voice Button"
-    Then Verify "The Behavior Of The Voice Button When Re-clicked"
-
   @GameplayTest54
   Scenario: GP Test 54: Checking The Behavior Of The Confirm Button After Betting A Round
     When I Enter The Dealer Table

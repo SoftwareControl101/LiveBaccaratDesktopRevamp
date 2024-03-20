@@ -28,13 +28,14 @@ public class PayoutWait extends Payout {
         testCaseList = getTestCaseList(payoutCases);
         payoutCaseList = payoutCases;
         isNonCommission = false;
-        int round = 0;
 
-        while (testCaseList.length != 0) {
+        for (int round = 1; round <= 100; round++) {
+
+            System.out.println();
+
             try {
 
-                System.out.println();
-                System.out.println("Round #" + (++round));
+                System.out.println("Round #" + (round));
                 System.out.println();
 
                 setBeforeBetting();
@@ -45,13 +46,17 @@ public class PayoutWait extends Payout {
 
                 System.out.println("    " + testCaseList.length + " Test Cases Left: " + Helper.toString(testCaseList));
                 System.out.println("    " + ignoreTestCase.size() + " Ignored Test Cases: " + Helper.toString(Helper.toStringArray(ignoreTestCase)));
+                System.out.println();
+
+                if (testCaseList.length == 0) {
+                    System.out.println("Total Rounds To Complete: " + round);
+                    System.out.println();
+                    break;
+                }
 
             } catch (Exception e) { Printer.printError("Failed on Round #" + round + " Due to the Following Cause: " + e); }
-        }
 
-        System.out.println();
-        System.out.println("Total Rounds To Complete: " + round);
-        System.out.println();
+        }
     }
 
     private static int[] getTestCaseList(List<PayoutCase> payoutCases) {

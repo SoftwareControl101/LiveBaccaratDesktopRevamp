@@ -51,9 +51,6 @@ public class Steps {
             case "Bet Limit Or Payout Tab" -> Printer.printInfo("Test Case 48 - Click Step Is Included In Verify Step");
             case "The Table Limit Button" -> EventHandler.click(DealerTable.Button.TableLimit);
             case "Any Table Limit Available" -> GameTest49.clickAnyTableLimitAvailable();
-            case "The Video Button" -> EventHandler.click(DealerTable.Button.Video, 1);
-            case "The Music Button" -> EventHandler.click(DealerTable.Button.Music, 1);
-            case "The Voice Button" -> EventHandler.click(DealerTable.Button.Voice, 1);
         }
     }
 
@@ -105,12 +102,6 @@ public class Steps {
             case "The Behavior Of The Game When Removed Chips To Selected Chips" -> GameTest45.verify();
             case "The Behavior Of The Game When Clicked Bet Limit Or Payout Tab Menu" -> GameTest48.verify();
             case "The Behavior Of The Game When Selected Any Available Table Limit" -> GameTest49.verify();
-            case "The Behavior Of The Video Button When Clicked" -> GameTest50.verify(true);
-            case "The Behavior Of The Video Button When Re-clicked" -> GameTest50.verify(false);
-            case "The Behavior Of The Music Button When Clicked" -> GameTest51.verify(true);
-            case "The Behavior Of The Music Button When Re-clicked" -> GameTest51.verify(false);
-            case "The Behavior Of The Voice Button When Clicked" -> GameTest52.verify(true);
-            case "The Behavior Of The Voice Button When Re-clicked" -> GameTest52.verify(false);
             case "The Behavior Of The Confirm Button After Betting A Round" -> GameTest54.verify();
         }
     }

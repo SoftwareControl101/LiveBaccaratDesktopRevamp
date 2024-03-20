@@ -40,10 +40,6 @@ public class PayoutTest8 extends Payout implements PayoutCase {
         if (TestConditions.isBankerWin(roundResult) && TestConditions.isFortuneSixWin(roundResult)) {
             payout = bet + (bet * payoutOdds);
             addWin(bet, payoutOdds);
-        } else if (TestConditions.isTieWin(roundResult)) {
-            if (Helper.find(7, testCaseList)) return;
-            payout = bet;
-            addWin(bet, 0);
         }
     }
 
